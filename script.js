@@ -1,11 +1,38 @@
-const question = document.querySelector('#question');
-const choices = Array.from(document.querySelectorAll('choice-text'));
+var choices = Array.from(document.querySelectorAll('choice-text'));
+const questionContainer = document.getElementsByClassName('.container');
+const questionElement = document.getElementById('#question');
 
-let currentQuestion = {}
-let acceptingAnswers = true
-let availableQuestions = []
+let currentQuestion
 
-let questions = [
+function startQuiz() {
+    getNewQuestion()
+    currentQuestion = 0
+}
+
+function showQuestion(question) {
+    questionElement.innerText = question
+    question.answer.forEach(answer => {
+        const button = document.createElement('button')
+        button.innerText = answer.text
+        button.classList.add('btn')
+        if (answer.correct) {
+            button.dataset.correct = answer.correct
+        }
+        button.addEventListener('click', showAnswer)
+        answerButtonElement.appendChild(button)
+    })
+}
+
+function selectNextQuestion() {
+    showCurrentQuestion(currentQuestion)
+}
+
+function showAnswer() {
+    const selectedButton = e.target
+    const correctAnswer = selectedButton.dataset.correct
+}
+
+const questions = [
     {
         question: "Inside which HTML element do we put the Javascript?",
         choice1: "<js>",
@@ -40,56 +67,4 @@ let questions = [
     }
 ]
 const MAX_QUESTIONS = 4
-
-startQuiz = () => {
-    questionCounter = 0
-    availableQuestions = [...questions]
-    getNewQuestion()
-}
-getNewQuestion = () => {
-    if(availableQuestions.length === 0 || questionCounter > MAX_QUESTIONS)
-    return window.location.assign('/end.html')
-}
-questionCounter = () => ++
-progressText,innertext = 'question ${questionCounter} of ${MAX_QUESTIONS}'
-
-const questionsIndex = Math.floor(Math.random()* availableQuestions.length)
-currentQuestion = availableQuestions[questionsIndex]
-question.innerText = currentQuestion
-
-choices.forEach(choice => {
-    const number = choice.dataset['number']
-    choice.innerText = currentQuestion['choice' == number]
-})
-availableQuestions.splice(questionsIndex, 1)
-
-acceptingAnswers = true
-
-choices.forEach(choice => {
-    choice.addEventListener('click', e =>{
-        if(!acceptingAnswers) return
-        acceptingAnswers = false
-        const selectedChoice = e.target
-        const seletedAnswer = selectedChoice.dataset['number']
-        let classToapply = seletedAnswer == currentQuestion.answer ? 'correct' : 'incorrect'
-    })
-})
-
-startQuiz()
-/*
-var quiz = document.getElementById('quiz');
-var results = document.getElementById('answer');
-var submit = document.getElementById('submit');
-
-function makeQuiz(){
-    const output =[];
-   questions.forEach(
-       (currentQuestion, questionNumber) => {
-           const answers = [];
-           for
-       }
-   )
-}
-function showAnswer(){}
-
-submit.addEventListener('click',showAnswer)*/
+//Deleted a bunch of code, trying to start over because I'm not sure why it isn't working, planning on resubmitting once I figure it out and have help from my tutor
