@@ -1,70 +1,76 @@
-var choices = Array.from(document.querySelectorAll('choice-text'));
 const questionContainer = document.getElementsByClassName('.container');
-const questionElement = document.getElementById('#question');
+const questionElement = document.getElementById('question');
+var startBtn = document.getElementById('start-btn');
+var answerBtnElement = document.getElementById('choice-container');
 
-let currentQuestion
+let currentQuestionIndex = 0;
+
+startBtn.addEventListener('click', startQuiz);
+
+var choicesEl = document.getElementById('choice-container');
 
 function startQuiz() {
-    getNewQuestion()
-    currentQuestion = 0
+    showQuestion();
 }
 
-function showQuestion(question) {
-    questionElement.innerText = question
-    question.answer.forEach(answer => {
-        const button = document.createElement('button')
-        button.innerText = answer.text
-        button.classList.add('btn')
-        if (answer.correct) {
-            button.dataset.correct = answer.correct
-        }
-        button.addEventListener('click', showAnswer)
-        answerButtonElement.appendChild(button)
-    })
+
+function showQuestion() {
+    var currentQuestion = questions [currentQuestionIndex];
+
+questionElement.textContent=currentQuestion.question;
+
+answerBtnElement.innerHTML="";
+
+currentQuestion.choices.forEach(function(choice){
+    var choiceNode = document.createElement("button");
+    choiceNode.setAttribute("class", "choice");
+    choiceNode.setAttribute("value", choice);
+
+    choiceNode.textContent=choice;
+
+    choiceNode.onclick = questionClick;
+    choicesEl.appendChild(choiceNode);
+});
+
+
+}
+function questionClick(){
+    if(this.value !== questions[currentQuestionIndex].answer){
+        alert("wrong");
+    }else {
+        alert("correct");
+    }
+    currentQuestionIndex++;
+    if(currentQuestionIndex===questions.length){
+        quizEnd();
+    }else {
+        showQuestion();
+    }
 }
 
-function selectNextQuestion() {
-    showCurrentQuestion(currentQuestion)
-}
-
-function showAnswer() {
-    const selectedButton = e.target
-    const correctAnswer = selectedButton.dataset.correct
+function quizEnd(){
+    alert("Quiz is over");
 }
 
 const questions = [
     {
         question: "Inside which HTML element do we put the Javascript?",
-        choice1: "<js>",
-        choice2: "<script>",
-        choice3: "<scripting>",
-        choice4: "<javascript>",
-        answer: 2,
+        choices: ["<js>", "<script>", "<scripting>", "<javascript>"],
+        answer: "<script>",
     },
     {
         question: "Where is the correct placement for Javascript?",
-        choice1: "Inside the <body>",
-        choice2: "Inside the <head>",
-        choice3: "Both answers are correct",
-        choice4: "Both answers are false",
-        answer: 3
+        choices: ["Inside the <body>", "Inside the <head>", "Both answers are correct", "Both answers are false"],
+        answer: "Both answers are correct",
     },
     {
         question: "What is the correct way to add a pop up message that says 'Hello World'",
-        choice1: "alert('Hello World')",
-        choice2: "msg('Hello World')",
-        choice3: "msgBox('Hello World')",
-        choice4: "alertBox('Hello World')",
-        answer: 1
+        choices: ["alert('Hello World')", "msg('Hello World')", "msgBox('Hello World')", "alertBox('Hello World')"],
+        answer: "alert('Hello World')",
     },
     {
         question: "How can you add a comment in Javascript?",
-        choice1: "'This is a comment",
-        choice2: "//This is a comment",
-        choice3: "<!--This is a comment-->",
-        choice4: "'This is a comment'",
-        answer: 2
+        choices: ["'This is a comment", "'This is a comment'", "<!--This is a comment-->", "//This is a comment"],
+        answer: "//This is a comment",
     }
 ]
-const MAX_QUESTIONS = 4
-//Deleted a bunch of code, trying to start over because I'm not sure why it isn't working, planning on resubmitting once I figure it out and have help from my tutor
